@@ -39,6 +39,17 @@ public class Player implements Actor {
 
 	}
 
+	public String toStringVerbose() {
+		String s = "";
+
+		s += name + " " + alignment.toString() + " " + race.toString() + " " + job.toString() + " "
+				+ subclass.toString() + " " + background.toString();
+		s += String.format("%n[%2d,%2d,%2d,%2d,%2d,%2d]", abilityScores[0], abilityScores[1], abilityScores[2],
+				abilityScores[3], abilityScores[4], abilityScores[5]);
+
+		return s;
+	}
+
 	@Override
 	public String getName() {
 		return name;
