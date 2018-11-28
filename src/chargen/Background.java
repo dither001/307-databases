@@ -1,0 +1,18 @@
+package chargen;
+
+public enum Background {
+	ACOLYTE, CHARLATAN, CRIMINAL, ENTERTAINER, FOLK_HERO, GUILD_ARTISAN, HERMIT, NOBLE, OUTLANDER, SAGE, SAILOR, SOLDIER, URCHIN;
+
+	/*
+	 * STATIC FIELDS
+	 */
+	private static final Background[] ALL_BACKGROUNDS = { ACOLYTE, CHARLATAN, CRIMINAL, ENTERTAINER, FOLK_HERO,
+			GUILD_ARTISAN, HERMIT, NOBLE, OUTLANDER, SAGE, SAILOR, SOLDIER, URCHIN };
+
+	/*
+	 * STATIC METHODS
+	 */
+	public static Background random() {
+		return Dice.randomFromArray(ALL_BACKGROUNDS);
+	}
+}
