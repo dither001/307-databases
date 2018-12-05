@@ -14,6 +14,13 @@ public enum Subclass {
 	FEY_PACT, FIEND_PACT, STAR_PACT, // warlocks
 	ABJURER, CONJUROR, DIVINER, ENCHANTER, EVOKER, ILLUSIONIST, NECROMANCER, TRANSMUTER; // wizards
 
+	private static final Subclass[] ALL_SUBCLASSES = { BERSERKER, BEAR_TOTEM, EAGLE_TOTEM, WOLF_TOTEM, LORE_COLLEGE,
+			VALOR_COLLEGE, DEATH, KNOWLEDGE, LIFE, LIGHT, NATURE, TEMPEST, TRICKERY, WAR, LAND_CIRCLE, MOON_CIRCLE,
+			CHAMPION, BATTLE_MASTER, ELDRITCH_KNIGHT, OPEN_HAND, SHADOW_WAY, FOUR_ELEMENTS, DEVOTION_OATH,
+			ANCIENTS_OATH, VENGEANCE_OATH, OATHBREAKER, HUNTER, BEAST_MASTER, THIEF, ASSASSIN, ARCANE_TRICKSTER,
+			DRAGON_ORIGIN, CHAOS_ORIGIN, FEY_PACT, FIEND_PACT, STAR_PACT, ABJURER, CONJUROR, DIVINER, ENCHANTER, EVOKER,
+			ILLUSIONIST, NECROMANCER, TRANSMUTER };
+
 	/*
 	 * STATIC FIELDS
 	 */
@@ -140,6 +147,19 @@ public enum Subclass {
 		}
 
 		return Subclass;
+	}
+
+	public static Subclass parseSubclass(String string) {
+		Subclass type = null;
+
+		for (Subclass el : ALL_SUBCLASSES) {
+			if (el.toString().compareToIgnoreCase(string) == 0) {
+				type = el;
+				break;
+			}
+		}
+
+		return type;
 	}
 
 }

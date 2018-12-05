@@ -6,6 +6,7 @@ public enum Alignment {
 	/*
 	 * STATIC FIELDS
 	 */
+	private static final Alignment[] ALL_ALIGNMENTS = { LAWFUL, GOOD, NEUTRAL, CHAOTIC, EVIL };
 
 	// lawful (15%), good (15%), neutral (15%), evil (40%), chaotic (15%)
 	private static final int[] ALIGNMENT_SKEW = new int[] { 15, 15, 15, 40, 15 };
@@ -36,4 +37,18 @@ public enum Alignment {
 
 		return choice;
 	}
+
+	public static Alignment parseAlignment(String string) {
+		Alignment type = null;
+
+		for (Alignment el : ALL_ALIGNMENTS) {
+			if (el.toString().compareToIgnoreCase(string) == 0) {
+				type = el;
+				break;
+			}
+		}
+
+		return type;
+	}
+
 }

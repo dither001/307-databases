@@ -11,6 +11,10 @@ public enum Race {
 	// two halfling subraces
 	LIGHTFOOT_HALFLING, STOUTHEART_HALFLING;
 
+	private static final Race[] ALL_RACES = { HUMAN, DRAGONBORN, HALF_ELF, HALF_ORC, TIEFLING, HILL_DWARF,
+			MOUNTAIN_DWARF, HIGH_ELF, WOOD_ELF, DARK_ELF, FOREST_GNOME, TINKER_GNOME, LIGHTFOOT_HALFLING,
+			STOUTHEART_HALFLING };
+
 	/*
 	 * STATIC METHODS
 	 */
@@ -135,5 +139,18 @@ public enum Race {
 		default:
 			break;
 		}
+	}
+
+	public static Race parseRace(String string) {
+		Race type = null;
+
+		for (Race el : ALL_RACES) {
+			if (el.toString().compareToIgnoreCase(string) == 0) {
+				type = el;
+				break;
+			}
+		}
+
+		return type;
 	}
 }

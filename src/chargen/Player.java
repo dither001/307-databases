@@ -1,6 +1,15 @@
 package chargen;
 
-public class Player implements Actor {
+import model.Persistent;
+
+public class Player implements Actor, Persistent {
+
+	/*
+	 * PERSISTENT FIELDS
+	 */
+	private boolean isPersistent;
+	private boolean hasChanged;
+	private int id;
 
 	/*
 	 * INSTANCE FIELDS
@@ -20,7 +29,14 @@ public class Player implements Actor {
 	private int experience;
 	private int level;
 
+	/*
+	 * CONSTRUCTORS
+	 */
 	public Player() {
+		isPersistent = false;
+		hasChanged = false;
+		id = 0;
+
 		abilityScores = Dice.rollAbilities();
 		abilityCeiling = new int[] { 20, 20, 20, 20, 20, 20 };
 		// if Constitution greater than Strength, then female
@@ -39,6 +55,15 @@ public class Player implements Actor {
 
 	}
 
+	public Player(String name, Alignment alignment, Background background, Race race, int level, int experience, Class job, Subclass subclass, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
+		// TODO
+		this.name = name;
+	}
+	
+	
+	/*
+	 * INSTANCE METHODS
+	 */
 	public String toStringVerbose() {
 		String s = "";
 
@@ -151,6 +176,29 @@ public class Player implements Actor {
 	@Override
 	public void setSubclass(Subclass subclass) {
 		this.subclass = subclass;
+	}
+
+	@Override
+	public boolean isPersistent() {
+		return isPersistent;
+	}
+
+	@Override
+	public boolean hasChanged() {
+		return hasChanged;
+	}
+
+	@Override
+	public int getId() {
+		if (isPersistent)
+			return id;
+		else
+			return 0;
+	}
+
+	@Override
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

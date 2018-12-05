@@ -77,5 +77,18 @@ public enum Class {
 		
 		return jobSkills;
 	}
+	
+	public static Class parseClass(String string) {
+		Class type = null;
+
+		for (Class el : ALL_CLASSES) {
+			if (el.toString().compareToIgnoreCase(string) == 0) {
+				type = el;
+				break;
+			}
+		}
+
+		return type;
+	}
 
 }

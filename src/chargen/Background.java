@@ -15,4 +15,17 @@ public enum Background {
 	public static Background random() {
 		return Dice.randomFromArray(ALL_BACKGROUNDS);
 	}
+
+	public static Background parseBackground(String string) {
+		Background type = null;
+
+		for (Background el : ALL_BACKGROUNDS) {
+			if (el.toString().compareToIgnoreCase(string) == 0) {
+				type = el;
+				break;
+			}
+		}
+
+		return type;
+	}
 }
