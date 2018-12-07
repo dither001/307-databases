@@ -55,12 +55,37 @@ public class Player implements Actor, Persistent {
 
 	}
 
-	public Player(String name, Alignment alignment, Background background, Race race, int level, int experience, Class job, Subclass subclass, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
-		// TODO
+	public Player(int id, String name, Alignment alignment, Background background, Race race, int level, int experience,
+			Class job, Subclass subclass, int strength, int dexterity, int constitution, int intelligence, int wisdom,
+			int charisma) {
+		// persistent
+		this.id = id;
+		this.isPersistent = true;
+		this.hasChanged = false;
+
+		// profile
 		this.name = name;
+		this.alignment = alignment;
+		this.background = background;
+		this.race = race;
+
+		// class/level
+		this.level = level;
+		this.experience = experience;
+		this.job = job;
+		this.subclass = subclass;
+
+		// ability scores
+		abilityScores = new int[] { 10, 10, 10, 10, 10, 10 };
+		abilityCeiling = new int[] { 20, 20, 20, 20, 20, 20 };
+		setStrength(strength);
+		setDexterity(dexterity);
+		setConstitution(constitution);
+		setIntelligence(intelligence);
+		setWisdom(wisdom);
+		setCharisma(charisma);
 	}
-	
-	
+
 	/*
 	 * INSTANCE METHODS
 	 */

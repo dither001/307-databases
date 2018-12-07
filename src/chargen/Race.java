@@ -15,6 +15,11 @@ public enum Race {
 			MOUNTAIN_DWARF, HIGH_ELF, WOOD_ELF, DARK_ELF, FOREST_GNOME, TINKER_GNOME, LIGHTFOOT_HALFLING,
 			STOUTHEART_HALFLING };
 
+	public int indexOf() {
+		return Util.indexOfEnum(this.toString(), ALL_RACES);
+	}
+
+
 	/*
 	 * STATIC METHODS
 	 */
@@ -139,6 +144,10 @@ public enum Race {
 		default:
 			break;
 		}
+	}
+
+	public static Race[] getRaces() {
+		return ALL_RACES;
 	}
 
 	public static Race parseRace(String string) {

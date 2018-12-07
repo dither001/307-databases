@@ -5,15 +5,15 @@ public interface Actor {
 	public String getName();
 
 	public void setName(String name);
-	
+
 	public boolean isFemale();
-	
+
 	public Alignment getAlignment();
-	
+
 	public void setAlignment(Alignment alignment);
-	
+
 	public Background getBackground();
-	
+
 	public void setBackground(Background background);
 
 	//
@@ -93,8 +93,8 @@ public interface Actor {
 		boolean set = false;
 		int ability = getAbilityScores()[index], ceiling = getAbilityCeiling()[index];
 
-		if (ability + bonus <= ceiling) {
-			getAbilityScores()[index] = (ability + bonus);
+		if (ability <= ceiling) {
+			getAbilityScores()[index] = bonus;
 			set = true;
 		}
 

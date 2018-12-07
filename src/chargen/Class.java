@@ -9,6 +9,11 @@ public enum Class {
 	private static final Class[] ALL_CLASSES = { BARBARIAN, BARD, CLERIC, DRUID, FIGHTER, MONK, PALADIN, RANGER, ROGUE,
 			SORCERER, WARLOCK, WIZARD };
 
+	public int indexOf() {
+		return Util.indexOfEnum(this.toString(), ALL_CLASSES);
+	}
+
+
 	/*
 	 * STATIC FIELDS
 	 */
@@ -50,7 +55,7 @@ public enum Class {
 
 	public static int getNumberOfSkills(Class job) {
 		int jobSkills = 2;
-		
+
 		switch (job) {
 		case BARBARIAN:
 		case CLERIC:
@@ -72,12 +77,16 @@ public enum Class {
 			break;
 		default:
 			jobSkills = 2;
-			break;		
+			break;
 		}
-		
+
 		return jobSkills;
 	}
-	
+
+	public static Class[] getClasses() {
+		return ALL_CLASSES;
+	}
+
 	public static Class parseClass(String string) {
 		Class type = null;
 

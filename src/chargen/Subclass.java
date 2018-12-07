@@ -21,6 +21,10 @@ public enum Subclass {
 			DRAGON_ORIGIN, CHAOS_ORIGIN, FEY_PACT, FIEND_PACT, STAR_PACT, ABJURER, CONJUROR, DIVINER, ENCHANTER, EVOKER,
 			ILLUSIONIST, NECROMANCER, TRANSMUTER };
 
+	public int indexOf() {
+		return Util.indexOfEnum(this.toString(), ALL_SUBCLASSES);
+	}
+
 	/*
 	 * STATIC FIELDS
 	 */
@@ -147,6 +151,10 @@ public enum Subclass {
 		}
 
 		return Subclass;
+	}
+
+	public static Subclass[] getSubclasses() {
+		return ALL_SUBCLASSES;
 	}
 
 	public static Subclass parseSubclass(String string) {

@@ -17,6 +17,10 @@ public enum Alignment {
 			1 + Dice.sumToArrayIndex(3, ALIGNMENT_SKEW) //
 	};
 
+	public int indexOf() {
+		return Util.indexOfEnum(this.toString(), ALL_ALIGNMENTS);
+	}
+
 	/*
 	 * STATIC METHODS
 	 */
@@ -36,6 +40,10 @@ public enum Alignment {
 			choice = CHAOTIC;
 
 		return choice;
+	}
+
+	public static Alignment[] getAlignments() {
+		return ALL_ALIGNMENTS;
 	}
 
 	public static Alignment parseAlignment(String string) {
