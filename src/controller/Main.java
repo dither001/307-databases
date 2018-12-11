@@ -49,7 +49,7 @@ public class Main extends JFrame {
 			for (int i = 0; i < 50; ++i)
 				tableModel.addInstance(new Player());
 
-			int count = insertPlayers();
+			int count = insertPlayers(tableModel.getInstances());
 			System.out.println("Inserted " + count + " characters.");
 		}
 
@@ -61,17 +61,19 @@ public class Main extends JFrame {
 
 		// components
 		JPanel sortPanel = new JPanel();
+		JButton genPlayerButton = new JButton("Generate Player");
 		JButton sortIdButton = new JButton("Sort by ID");
 		JButton sortFirstButton = new JButton("Sort by first");
 		JButton sortLastButton = new JButton("Sort by last");
 		JButton sortStatusButton = new JButton("Sort by status");
 
+		sortPanel.add(genPlayerButton);
 		// sortPanel.add(sortIdButton);
 		// sortPanel.add(sortFirstButton);
 		// sortPanel.add(sortLastButton);
 		// sortPanel.add(sortStatusButton);
 
-		// add(sortPanel, BorderLayout.SOUTH);
+//		add(sortPanel, BorderLayout.SOUTH);
 
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -81,11 +83,6 @@ public class Main extends JFrame {
 	 * METHODS
 	 */
 	public static void main(String... args) {
-
-		// Object[] array = Subclass.getSubclasses();
-		// for (int i = 0; i < array.length; ++i)
-		// System.out.println("(" + array[i].toString() + "),");
-
 		Main main = new Main();
 		main.setVisible(true);
 	}
@@ -93,7 +90,6 @@ public class Main extends JFrame {
 	private void connect() {
 		try {
 			java.lang.Class.forName("org.sqlite.JDBC");
-
 			connection = DriverManager.getConnection(DB_URL);
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -102,13 +98,17 @@ public class Main extends JFrame {
 
 	private int lastPlayerIndex() {
 		int lastPlayerIndex = 0;
-		String query = "SELECT id FROM Player DESC LIMIT 1;";
+		if (connection == null)
+			connect();
 
-		ResultSet results;
+		String query = "SELECT id FROM Player ORDER BY id DESC LIMIT 1;";
+		PreparedStatement statement = null;
+
+		ResultSet set;
 		try {
-			results = connection.createStatement().executeQuery(query);
-			lastPlayerIndex = results.getInt("id");
-			System.out.println(lastPlayerIndex);
+			statement = connection.prepareStatement(query);
+			set = statement.executeQuery();
+			lastPlayerIndex = set.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -116,8 +116,48 @@ public class Main extends JFrame {
 		return lastPlayerIndex;
 	}
 
-	private int insertPlayers() {
-		int count = 0;
+	private boolean insertPlayer(Player player) {
+		boolean insert = false;
+		if (connection == null)
+			connect();
+
+		int playerIndex = 1 + lastPlayerIndex();
+
+		PreparedStatement statement = null;
+		String string = String.format("INSERT INTO Player VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );");
+
+		try {
+			statement = connection.prepareStatement(string);
+
+			int col = 1;
+			statement.setString(col++, String.valueOf(playerIndex++));
+			statement.setString(col++, String.valueOf(player.getName()));
+			statement.setString(col++, String.valueOf(player.getAlignment().indexOf()));
+			statement.setString(col++, String.valueOf(player.getBackground().indexOf()));
+			statement.setString(col++, String.valueOf(player.getRace().indexOf()));
+			statement.setString(col++, String.valueOf(player.getLevel()));
+			statement.setString(col++, String.valueOf(player.getExperience()));
+			statement.setString(col++, String.valueOf(player.getJob().indexOf()));
+			statement.setString(col++, String.valueOf(player.getSubclass().indexOf()));
+			statement.setString(col++, String.valueOf(player.getStrength()));
+			statement.setString(col++, String.valueOf(player.getDexterity()));
+			statement.setString(col++, String.valueOf(player.getConstitution()));
+			statement.setString(col++, String.valueOf(player.getIntelligence()));
+			statement.setString(col++, String.valueOf(player.getWisdom()));
+			statement.setString(col++, String.valueOf(player.getCharisma()));
+
+			statement.execute();
+			insert = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+
+		return insert;
+	}
+
+	private int insertPlayers(List<Player> playerList) {
+		int inserted = 0;
 		if (connection == null)
 			connect();
 
@@ -128,8 +168,8 @@ public class Main extends JFrame {
 		try {
 			statement = connection.prepareStatement(string);
 
-			List<Player> list = tableModel.getInstances();
-			for (Iterator<Player> it = list.iterator(); it.hasNext();) {
+			// List<Player> list = tableModel.getInstances();
+			for (Iterator<Player> it = playerList.iterator(); it.hasNext();) {
 				Player player = it.next();
 
 				if (!player.isPersistent()) {
@@ -151,7 +191,7 @@ public class Main extends JFrame {
 					statement.setString(col++, String.valueOf(player.getCharisma()));
 
 					statement.execute();
-					++count;
+					++inserted;
 				}
 			}
 
@@ -159,7 +199,7 @@ public class Main extends JFrame {
 			e.printStackTrace();
 		}
 
-		return count;
+		return inserted;
 	}
 
 	private List<Player> loadPlayers() {
