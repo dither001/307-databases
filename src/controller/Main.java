@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import chargen.*;
 import model.*;
@@ -31,6 +33,8 @@ public class Main extends JFrame {
 	private Connection connection;
 	private PlayerTableModel tableModel;
 	private JTable playerTable;
+	// row sorter - must be instantiated with table, then passed to table
+	private TableRowSorter<TableModel> rowSorter;
 
 	/*
 	 * CONSTRUCTOR
@@ -55,6 +59,8 @@ public class Main extends JFrame {
 
 		//
 		playerTable = new JTable(tableModel);
+		rowSorter = new TableRowSorter<>(playerTable.getModel());
+		playerTable.setRowSorter(rowSorter);
 		// playerTable.setDefaultEditor(columnClass, editor);
 
 		add(new JScrollPane(playerTable), BorderLayout.CENTER);
@@ -62,18 +68,9 @@ public class Main extends JFrame {
 		// components
 		JPanel sortPanel = new JPanel();
 		JButton genPlayerButton = new JButton("Generate Player");
-		JButton sortIdButton = new JButton("Sort by ID");
-		JButton sortFirstButton = new JButton("Sort by first");
-		JButton sortLastButton = new JButton("Sort by last");
-		JButton sortStatusButton = new JButton("Sort by status");
 
 		sortPanel.add(genPlayerButton);
-		// sortPanel.add(sortIdButton);
-		// sortPanel.add(sortFirstButton);
-		// sortPanel.add(sortLastButton);
-		// sortPanel.add(sortStatusButton);
-
-//		add(sortPanel, BorderLayout.SOUTH);
+		// add(sortPanel, BorderLayout.SOUTH);
 
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -189,6 +186,54 @@ public class Main extends JFrame {
 					statement.setString(col++, String.valueOf(player.getIntelligence()));
 					statement.setString(col++, String.valueOf(player.getWisdom()));
 					statement.setString(col++, String.valueOf(player.getCharisma()));
+
+					statement.execute();
+					++inserted;
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return inserted;
+	}
+
+	private int updatePlayers(List<Player> playerList) {
+		int inserted = 0;
+		if (connection == null)
+			connect();
+
+		PreparedStatement statement = null;
+		String string = "UPDATE Player\r\n" + "  SET name=?,\r\n" + "  alignment=?,\r\n" + "  background=?,\r\n"
+				+ "  race=?,\r\n" + "  level=?,\r\n" + "  experience=?,\r\n" + "  class=?,\r\n" + "  subclass=?,\r\n"
+				+ "  strength=?,\r\n" + "  dexterity=?,\r\n" + "  constitution=?,\r\n" + "  intelligence=?,\r\n"
+				+ "  wisdom=?,\r\n" + "  charisma=?\r\n" + "  WHERE id=?;";
+
+		try {
+			statement = connection.prepareStatement(string);
+
+			// List<Player> list = tableModel.getInstances();
+			for (Iterator<Player> it = playerList.iterator(); it.hasNext();) {
+				Player player = it.next();
+
+				if (player.isPersistent() && player.hasChanged()) {
+					int col = 1;
+					statement.setString(col++, String.valueOf(player.getName()));
+					statement.setString(col++, String.valueOf(player.getAlignment().indexOf()));
+					statement.setString(col++, String.valueOf(player.getBackground().indexOf()));
+					statement.setString(col++, String.valueOf(player.getRace().indexOf()));
+					statement.setString(col++, String.valueOf(player.getLevel()));
+					statement.setString(col++, String.valueOf(player.getExperience()));
+					statement.setString(col++, String.valueOf(player.getJob().indexOf()));
+					statement.setString(col++, String.valueOf(player.getSubclass().indexOf()));
+					statement.setString(col++, String.valueOf(player.getStrength()));
+					statement.setString(col++, String.valueOf(player.getDexterity()));
+					statement.setString(col++, String.valueOf(player.getConstitution()));
+					statement.setString(col++, String.valueOf(player.getIntelligence()));
+					statement.setString(col++, String.valueOf(player.getWisdom()));
+					statement.setString(col++, String.valueOf(player.getCharisma()));
+					statement.setString(col++, String.valueOf(player.getId()));
 
 					statement.execute();
 					++inserted;

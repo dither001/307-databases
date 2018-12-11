@@ -44,6 +44,7 @@ public class PlayerTableModel extends EntityTableModel<Player> {
 	 * CONSTRUCTORS
 	 */
 	public PlayerTableModel() {
-		setColumns(NAME, ALI, BGD, RACE, LVL, EXP, CLASS, SUBCLASS, STR, DEX, CON, INT, WIS, CHA);
+		setColumns(EXP, LVL, NAME, ALI, RACE, SUBCLASS, CLASS, BGD, STR, DEX, CON, INT, WIS, CHA);
+//		setColumns(LVL, EXP, NAME, ALI, RACE, SUBCLASS, CLASS, BGD, STR, DEX, CON, INT, WIS, CHA);
 	}
 }

@@ -1,8 +1,6 @@
 package chargen;
 
-import model.Persistent;
-
-public class Player implements Actor, Persistent {
+public class Player implements Actor {
 
 	/*
 	 * PERSISTENT FIELDS
@@ -108,6 +106,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -123,6 +122,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setAlignment(Alignment alignment) {
 		this.alignment = alignment;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -133,6 +133,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setBackground(Background background) {
 		this.background = background;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -143,6 +144,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setLevel(int level) {
 		this.level = level;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -153,6 +155,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setExperience(int experience) {
 		this.experience = experience;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -166,6 +169,8 @@ public class Player implements Actor, Persistent {
 		for (int i = 0; i < length; ++i) {
 			this.abilityScores[i] = abilityScores[i];
 		}
+
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -181,6 +186,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setRace(Race race) {
 		this.race = race;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -191,6 +197,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setJob(Class job) {
 		this.job = job;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -201,6 +208,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setSubclass(Subclass subclass) {
 		this.subclass = subclass;
+		this.hasChanged = true;
 	}
 
 	@Override
@@ -224,6 +232,7 @@ public class Player implements Actor, Persistent {
 	@Override
 	public void setId(int id) {
 		this.id = id;
+		this.hasChanged = true;
 	}
 
 }

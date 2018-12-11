@@ -1,6 +1,8 @@
 package chargen;
 
-public interface Actor {
+import model.Persistent;
+
+public interface Actor extends Persistent {
 	//
 	public String getName();
 
