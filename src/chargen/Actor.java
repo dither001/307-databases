@@ -94,9 +94,15 @@ public interface Actor extends Persistent {
 	public default boolean setAbilityScore(int index, int bonus) {
 		boolean set = false;
 		int ability = getAbilityScores()[index], ceiling = getAbilityCeiling()[index];
-
+//
+//		if (ability <= ceiling) {
+//			getAbilityScores()[index] = bonus;
+//			set = true;
+//		}
+		int[] newScores = getAbilityScores();
 		if (ability <= ceiling) {
-			getAbilityScores()[index] = bonus;
+			newScores[index] = bonus;
+			this.setAbilityScores(newScores);
 			set = true;
 		}
 

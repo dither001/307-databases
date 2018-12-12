@@ -57,6 +57,7 @@ public class Main extends JFrame {
 			System.out.println("Inserted " + count + " characters.");
 		}
 
+		System.out.println(lastPlayerIndex());
 		//
 		playerTable = new JTable(tableModel);
 		rowSorter = new TableRowSorter<>(playerTable.getModel());
@@ -68,9 +69,15 @@ public class Main extends JFrame {
 		// components
 		JPanel sortPanel = new JPanel();
 		JButton genPlayerButton = new JButton("Generate Player");
+		JButton commitChanges = new JButton("Commit Changes");
 
 		sortPanel.add(genPlayerButton);
-		// add(sortPanel, BorderLayout.SOUTH);
+		sortPanel.add(commitChanges);
+		genPlayerButton.addActionListener(e -> tableModel.addInstance(new Player()));
+		commitChanges.addActionListener(e -> commitChanges());
+
+		// adds the southern panel
+		add(sortPanel, BorderLayout.SOUTH);
 
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -113,7 +120,27 @@ public class Main extends JFrame {
 		return lastPlayerIndex;
 	}
 
-	private boolean insertPlayer(Player player) {
+	private void commitChanges() {
+		List<Player> workingList = tableModel.getInstances();
+		List<Player> insertList = new ArrayList<Player>();
+		List<Player> updateList = new ArrayList<Player>();
+
+		// committing all the changes
+		for (Iterator<Player> it = workingList.iterator(); it.hasNext();) {
+			Player player = it.next();
+
+			if (!player.isPersistent())
+				insertList.add(player);
+
+			if (player.hasChanged())
+				updateList.add(player);
+		}
+
+		insertPlayers(insertList);
+		updatePlayers(updateList);
+	}
+
+	private boolean insertSinglePlayer(Player player) {
 		boolean insert = false;
 		if (connection == null)
 			connect();
@@ -165,11 +192,12 @@ public class Main extends JFrame {
 		try {
 			statement = connection.prepareStatement(string);
 
-			// List<Player> list = tableModel.getInstances();
 			for (Iterator<Player> it = playerList.iterator(); it.hasNext();) {
 				Player player = it.next();
 
 				if (!player.isPersistent()) {
+					player.setId(playerIndex);
+
 					int col = 1;
 					statement.setString(col++, String.valueOf(playerIndex++));
 					statement.setString(col++, String.valueOf(player.getName()));
@@ -213,7 +241,6 @@ public class Main extends JFrame {
 		try {
 			statement = connection.prepareStatement(string);
 
-			// List<Player> list = tableModel.getInstances();
 			for (Iterator<Player> it = playerList.iterator(); it.hasNext();) {
 				Player player = it.next();
 
@@ -287,9 +314,6 @@ public class Main extends JFrame {
 				INT = results.getInt(i++);
 				WIS = results.getInt(i++);
 				CHA = results.getInt(i++);
-
-				// System.out.println(String.format("%d %d %d %d %d %d", STR, DEX, CON, INT,
-				// WIS, CHA));
 
 				players.add(new Player(id, name, ali, bgd, rac, lvl, exp, job, sub, STR, DEX, CON, INT, WIS, CHA));
 			}

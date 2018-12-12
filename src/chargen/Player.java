@@ -232,6 +232,7 @@ public class Player implements Actor {
 	@Override
 	public void setId(int id) {
 		this.id = id;
+		this.isPersistent = true;
 		this.hasChanged = true;
 	}
 
