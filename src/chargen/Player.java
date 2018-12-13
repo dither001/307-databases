@@ -41,7 +41,7 @@ public class Player implements Actor {
 		isFemale = (abilityScores[2] > abilityScores[0]) ? true : false;
 
 		alignment = Alignment.random();
-		job = Class.random();
+		job = Class.selectClass(this);
 		subclass = Subclass.random(this);
 		race = Race.random();
 		background = Background.random();

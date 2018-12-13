@@ -20,6 +20,45 @@ public enum Class {
 	public static Class random() {
 		return Dice.randomFromArray(ALL_CLASSES);
 	}
+	
+	public static Class selectClass(Player actor) {
+		Class job;
+		Alignment ali = actor.getAlignment();
+
+		int dexterity, intelligence, wisdom, charisma;
+		dexterity = actor.getDexterity();
+		intelligence = actor.getIntelligence();
+		wisdom = actor.getWisdom();
+		charisma = actor.getCharisma();
+
+		int dice = Dice.roll(4);
+		if (charisma > 11 && dice == 1)
+			job = BARD;
+		else if (charisma > 11 && dice == 2)
+			job = SORCERER;
+		else if (charisma > 11 && dice == 3)
+			job = WARLOCK;
+		else if (wisdom > 11 && dice == 1)
+			job = CLERIC;
+		else if (wisdom > 11 && dice == 2)
+			job = DRUID;
+		else if (wisdom > 11 && dice == 3)
+			job = MONK;
+		else if (intelligence > 11 && dice < 3)
+			job = WIZARD;
+		else if (dexterity > 11 && dice < 3)
+			job = RANGER;
+		else if (ali.equals(Alignment.GOOD))
+			job = PALADIN;
+		else if (ali.equals(Alignment.CHAOTIC))
+			job = BARBARIAN;
+		else if (ali.equals(Alignment.LAWFUL) || dice < 4)
+			job = FIGHTER;
+		else
+			job = ROGUE;
+
+		return job;
+	}
 
 	public static int getHitDie(Class job) {
 		int hitDie = 8;

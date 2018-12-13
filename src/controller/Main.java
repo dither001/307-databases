@@ -88,7 +88,9 @@ public class Main extends JFrame {
 	 */
 	public static void main(String... args) {
 		Main main = new Main();
-		main.setVisible(true);
+//		main.setVisible(true);
+		for (int i = 0; i < 10; ++i)
+		System.out.println(new Player().toStringVerbose());
 	}
 
 	private void connect() {
